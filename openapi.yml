@@ -1,0 +1,512 @@
+openapi: 3.0.0
+info:
+  description: "API permettant de récupérer les résultats des éditions du tour de France"
+  version: 1.0.0
+  title: API Tour de France (proposal)
+  
+  
+tags:
+- name: tour de france
+  description: Gestion des informations autour d'une édition
+  
+
+paths:
+  /editions/{annee}/classement:
+    get:
+      tags:
+      - tour de france
+      summary: Affiche le classement d'une édition du tour de France
+      operationId: getClassement
+      parameters:
+        - $ref: '#/components/parameters/annee'
+        - $ref: '#/components/parameters/classement_type'
+      responses:
+        '200':
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetClassementResponse'
+              example:
+                type: general
+                positions:
+                - position: 1
+                  temps: 313200
+                  coureur: 
+                    id: 2bf308b7-6882-4892-b4d8-9848ce7b4b96
+                    nom: Pogacar
+                    prenom: Tadej
+                    pays: SI
+                    dateNaissance: "1998-09-21"
+                    dateDeces: null
+                  equipe_id: e0da66af-2cf4-4ee6-8627-261082e4f0a4
+                - position: 2
+                  temps: 313188
+                  coureur: 
+                    id: 2bf308b7-6882-4892-b4d8-9848ce7b4b96
+                    nom: Roglic
+                    prenom: Primoz
+                    pays: SI
+                    dateNaissance: "1989-10-29"
+                    dateDeces: null
+                  equipe_id: a2a5ecff-544a-4593-9000-80770b485f95
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      security:
+       - bearerAuth: []
+  /editions/{annee}/equipes:
+    get:
+      tags:
+      - tour de france
+      summary: Affiche les équipes participants à une édition du tour de France
+      operationId: getTeams
+      parameters:
+        - $ref: '#/components/parameters/annee'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+      responses:
+        '200':
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTeamsResponse'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      security:
+       - bearerAuth: []
+  /editions/{annee}/equipes/{equipe_id}:
+    get:
+      tags:
+      - tour de france
+      summary: Affiche une équipe spécifique participant à une édition du tour de France
+      operationId: getTeam
+      parameters:
+        - $ref: '#/components/parameters/annee'
+        - $ref: '#/components/parameters/equipe_id'
+      responses:
+        '200':
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        '404':
+          description: Resource Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      security:
+       - bearerAuth: []
+  /editions/{annee}/equipes/{equipe_id}/coureurs:
+    get:
+      tags:
+      - tour de france
+      summary: Affiche les coureurs d'une équipe
+      operationId: getCoureursTeam
+      parameters:
+        - $ref: '#/components/parameters/annee'
+        - $ref: '#/components/parameters/equipe_id'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+      responses:
+        '200':
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCoureursTeamResponse'
+
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      security:
+       - bearerAuth: []
+  /editions/{annee}/etapes:
+    get:
+      tags:
+      - tour de france
+      summary: Affiche les étapes d'une édition du tour de France
+      operationId: getEtapes
+      parameters:
+        - $ref: '#/components/parameters/annee'
+      responses:
+        '200':
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEtapesResponse'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      security:
+       - bearerAuth: []
+  /editions/{annee}/etapes/{numero_etape}/classement:
+    get:
+      tags:
+      - tour de france
+      summary: Affiche le classement d'une étape
+      operationId: getEtapeClassement
+      parameters:
+        - $ref: '#/components/parameters/annee'
+        - $ref: '#/components/parameters/numero_etape'
+        - $ref: '#/components/parameters/classement_type'
+      responses:
+        '200':
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetClassementResponse'
+              example:
+                type: general
+                positions:
+                - position: 1
+                  temps: 10412
+                  coureur: 
+                    id: 0a61972f-e72a-47cf-9385-25a4c1925819
+                    nom: Bennett 
+                    prenom: Sam
+                    pays: IE
+                    dateNaissance: "1990-10-16"
+                    dateDeces: null
+                  equipe_id: 559ebf80-131e-4763-8ed8-dc51ffb12afa
+                - position: 2
+                  temps: 10412
+                  coureur: 
+                    id: 7fd43a5e-9929-4821-ba7b-d391f8a4a12d
+                    nom: Pedersen
+                    prenom: Mads
+                    pays: DK
+                    dateNaissance: "1995-12-18"
+                    dateDeces: null
+                  equipe_id: a2a5ecff-544a-4593-9000-80770b485f95
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      security:
+       - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    GetCollectionBase:
+      required:
+        - offset
+        - limit
+        - count
+        - total
+      properties:
+        offset:
+          description: Nombre du premier résultat retourné
+          type: integer
+          format: int32
+        limit:
+          description: Nombre de résultats à récupérer
+          type: integer
+          format: int32
+        count:
+          description: Nombre de résultats réellement retournés 
+          type: integer
+          format: int32
+        total:
+          description: Nombre total de résultats
+          type: integer
+          format: int32
+          
+    Coureur:
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+        nom:
+          type: "string"
+          example: Dupont
+        prenom:
+          type: "string"
+          example: Jean
+        dateNaissance:
+          type: "string"
+          description: "format aaaa-mm-jj ISO"
+          format: date
+          example: "1990-12-02"
+        dateDeces:
+          type: "string"
+          description: "format aaaa-mm-jj ISO"
+          format: date
+          nullable: true
+          example: null
+        pays:
+          type: "string"
+          description: Code ISO-3166-1
+          example: "FR"
+      
+    Team:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+        nomEquipe:
+          type: "string"
+          example: "AG2R"
+        manager:
+          type: "string"
+          example: "Martin Petit"
+        capitaine:
+          $ref: '#/components/schemas/Coureur'
+        sponsors:
+          type: array
+          items:
+            type: string
+          example:
+          - "EDF"
+          - "Uber Eats"
+    
+    Etape:
+      properties:
+        id:
+          type: "string"
+          format: uuid
+        numero:
+          type: "integer"
+          minimum: 1
+          maximum: 25
+          example: 10
+        date:
+          type: "string"
+          format: date
+        nom:
+          type: "string"
+          example: Le Château d'Oléron - Saint-Martin-de-Ré
+        distance:
+          type: "integer"
+          description: Distance en kilomètre
+          example: 170
+        type:
+          type: "string"
+          enum:
+          - plaine
+          - accidentée
+          - montagne
+          - contre-la-montre
+
+    ClassementType:
+      type: string
+      enum: 
+        - general
+        - grimpeur
+        - jeune
+        - equipe
+      default: general
+          
+    Classement:
+      properties:
+        type:
+          $ref: '#/components/schemas/ClassementType'
+        positions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Position'
+        
+    Position:
+      properties:
+        position:
+          type: integer
+          minimum: -1
+          maximum: 25
+        temps:
+          type: integer
+          description: durée représentée sous forme de nombre de seconde
+        points:
+          type: integer
+        coureur_id: 
+          type: integer
+        equipe_id:
+          type: integer
+
+    GetTeamsResponse:
+      required: 
+      - equipes
+      allOf:
+        - $ref: '#/components/schemas/GetCollectionBase'
+      properties:
+        equipes:
+         type: array
+         items:
+           $ref: '#/components/schemas/Team'
+           
+    GetCoureursTeamResponse:
+      required: 
+      - coureurs
+      allOf:
+        - $ref: '#/components/schemas/GetCollectionBase'
+      properties:
+        coureurs:
+         type: array
+         items:
+           $ref: '#/components/schemas/Coureur'
+           
+    GetEtapesResponse:
+      required: 
+      - etapes
+      allOf:
+        - $ref: '#/components/schemas/GetCollectionBase'
+      properties:
+        etapes:
+         type: array
+         items:
+           $ref: '#/components/schemas/Etape'
+           
+    GetClassementResponse:
+      $ref: '#/components/schemas/Classement'
+        
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+
+    Unauthorized:
+      description: Unauthorized
+      allOf:
+        - $ref: '#/components/schemas/Error'
+      properties:
+        code:
+          type: string
+          enum:
+            - unauthorized
+        message:
+          example: "Your request is unauthorized to call this resource"
+            
+    BadRequest:
+      description: Bad Request
+      allOf:
+        - $ref: '#/components/schemas/Error'
+      properties:
+        code:
+          type: string
+          enum:
+            - bad_request
+        message:
+          example: "The payload do not respect the contract"
+ 
+    InternalError:
+      description: Internal Error
+      allOf:
+        - $ref: '#/components/schemas/Error'
+      properties:
+        code:
+          type: string
+          enum:
+            - internal_error
+        message:
+          example: "Please contact the administrator..."   
+          
+    NotFound:
+      description: The resource not found
+      allOf:
+        - $ref: '#/components/schemas/Error'
+      properties:
+        code:
+          type: string
+          enum:
+            - not_found
+        message:
+          example: "Resource not found"
+          
+    Conflict:
+      description: The resource already exists
+      allOf:
+        - $ref: '#/components/schemas/Error'
+      properties:
+        code:
+          type: "string"
+          enum:
+            - conflict
+        message:
+          example: "The resource already exists"
+
+  parameters:
+    annee:
+      name: annee
+      in: path
+      description: Identifiant de l'édition du tour
+      required: true
+      schema:
+        type: string
+        format: year
+    equipe_id:
+      name: equipe_id
+      in: path
+      description: Identifiant de l'équipe
+      required: true
+      schema:
+        type: integer
+    numero_etape:
+      name: numero_etape
+      in: path
+      description: Numéro de l'étape
+      required: true
+      schema:
+        type: integer
+    classement_type:
+      name: classement_type
+      in: query
+      description: Type de classement
+      required: false
+      schema:
+        $ref: '#/components/schemas/ClassementType'
+    limit:
+      name: limit
+      in: query
+      description: Nombre de résultat à récupérer par appel. Valeur par défaut 25, maximum 50
+      required: false
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 50
+        default: 25
+    offset:
+      name: offset
+      in: query
+      description: Numéro de l'élément à aller récuper. Valeur par défault 0 (1er élément de la liste)
+      required: false
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+        default: 0

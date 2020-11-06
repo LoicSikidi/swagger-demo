@@ -25,7 +25,7 @@ paths:
         - $ref: '#/components/parameters/classement_type'
       responses:
         '200':
-          description: Success response
+          description: Réponse en succès
           content:
             application/json:
               schema:
@@ -53,8 +53,14 @@ paths:
                     dateNaissance: "1989-10-29"
                     dateDeces: null
                   equipe_id: a2a5ecff-544a-4593-9000-80770b485f95
+        '401':
+          description: "Votre jeton d'accéss est invalide ou périmé ce faisant l'accès à la ressource vous est refusé"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
         '500':
-          description: Internal Error
+          description: Erreur interne 
           content:
             application/json:
               schema:
@@ -73,13 +79,19 @@ paths:
         - $ref: '#/components/parameters/offset'
       responses:
         '200':
-          description: Success response
+          description: Réponse en succès
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetTeamsResponse'
+        '401':
+          description: "Votre jeton d'accéss est invalide ou périmé ce faisant l'accès à la ressource vous est refusé"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
         '500':
-          description: Internal Error
+          description: Erreur interne
           content:
             application/json:
               schema:
@@ -97,19 +109,25 @@ paths:
         - $ref: '#/components/parameters/equipe_id'
       responses:
         '200':
-          description: Success response
+          description: Réponse en succès
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Team'
+        '401':
+          description: "Votre jeton d'accéss est invalide ou périmé ce faisant l'accès à la ressource vous est refusé"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
         '404':
-          description: Resource Not Found
+          description: "La ressource n'existe pas"
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFound'
         '500':
-          description: Internal Error
+          description: Erreur interne
           content:
             application/json:
               schema:
@@ -129,14 +147,19 @@ paths:
         - $ref: '#/components/parameters/offset'
       responses:
         '200':
-          description: Success response
+          description: Réponse en succès
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetCoureursTeamResponse'
-
+        '401':
+          description: "Votre jeton d'accéss est invalide ou périmé ce faisant l'accès à la ressource vous est refusé"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
         '500':
-          description: Internal Error
+          description: Erreur interne
           content:
             application/json:
               schema:
@@ -153,13 +176,19 @@ paths:
         - $ref: '#/components/parameters/annee'
       responses:
         '200':
-          description: Success response
+          description: Réponse en succès
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetEtapesResponse'
+        '401':
+          description: "Votre jeton d'accéss est invalide ou périmé ce faisant l'accès à la ressource vous est refusé"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
         '500':
-          description: Internal Error
+          description: Erreur interne
           content:
             application/json:
               schema:
@@ -178,7 +207,7 @@ paths:
         - $ref: '#/components/parameters/classement_type'
       responses:
         '200':
-          description: Success response
+          description: Réponse en succès
           content:
             application/json:
               schema:
@@ -206,8 +235,14 @@ paths:
                     dateNaissance: "1995-12-18"
                     dateDeces: null
                   equipe_id: a2a5ecff-544a-4593-9000-80770b485f95
+        '401':
+          description: "Votre jeton d'accéss est invalide ou périmé ce faisant l'accès à la ressource vous est refusé"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
         '500':
-          description: Internal Error
+          description: Erreur interne
           content:
             application/json:
               schema:
@@ -403,7 +438,7 @@ components:
           type: string
 
     Unauthorized:
-      description: Unauthorized
+      description: "Votre jeton d'accéss est invalide ou périmé ce faisant l'accès à la ressource vous est refusé"
       allOf:
         - $ref: '#/components/schemas/Error'
       properties:
@@ -427,7 +462,7 @@ components:
           example: "The payload do not respect the contract"
  
     InternalError:
-      description: Internal Error
+      description: Erreur interne
       allOf:
         - $ref: '#/components/schemas/Error'
       properties:

@@ -5,7 +5,7 @@ info:
     
     **Toutes les routes avec un cadenas sont protégées par le protocol OAuth2**
   version: 1.0.0
-  title: API Tour de France
+  title: "API Tour de France"
   
   
 tags:

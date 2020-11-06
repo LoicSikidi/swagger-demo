@@ -1,8 +1,11 @@
 openapi: 3.0.0
 info:
-  description: "API permettant de récupérer les résultats des éditions du tour de France"
+  description: |
+    API permettant de récupérer les résultats des éditions du tour de France
+    
+    **Toutes les routes avec un cadenas sont protégées par le protocol OAuth2**
   version: 1.0.0
-  title: API Tour de France (proposal)
+  title: API Tour de France
   
   
 tags:

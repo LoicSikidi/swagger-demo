@@ -5,11 +5,14 @@ const path      = require('path')
 const PORT      = 3005
 const app       = express()
 
+const equipes   = require('./src/routes/equipes')
+
 const apiSpecPath = path.join(__dirname, 'openapi.yaml')
 const exo1 = path.join(__dirname, 'soluce_exo1.yaml')
 const exo2 = path.join(__dirname, 'soluce_exo2.yaml')
 
 app.disable('x-powered-by')
+app.use('/api/v1/equipes', equipes)
 app.use("/default", swaggerUI.serve, (...args) => swaggerUI.setup(yamljs.load(apiSpecPath))(...args))
 app.use("/solution-exo-1", swaggerUI.serve, (...args) => swaggerUI.setup(yamljs.load(exo1))(...args))
 app.use("/solution-exo-2", swaggerUI.serve, (...args) => swaggerUI.setup(yamljs.load(exo2))(...args))

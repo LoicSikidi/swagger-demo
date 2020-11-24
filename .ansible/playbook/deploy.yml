@@ -1,0 +1,38 @@
+---
+- hosts: all
+  gather_facts: no
+
+  vars:
+    gtrgaz_demo_app:
+      repo: git@github.com:LoicSikidi/swagger-demo.git
+      name: gtrgaz_demo
+      location: /srv/deployment/gtrgaz_demo_app
+
+  handlers:
+    - name: restart grtgaz-demo service
+      command: /usr/local/lib/npm/bin/pm2 restart {{ gtrgaz_demo_app.name }}
+      become_user: "{{ ansible_ssh_user }}"
+  
+  tasks:
+    - name: Pull git project.
+      git:
+        repo: "{{ gtrgaz_demo_app.repo }}"
+        dest: "{{ gtrgaz_demo_app.location }}"
+      become_user: "{{ ansible_ssh_user }}"
+      register: git_result
+      changed_when: "git_result.after|default('after') != git_result.before|default('before')"
+      notify: restart grtgaz-demo service
+    
+    - name: Install project dependencies defined in package.json.
+      npm: "path={{ gtrgaz_demo_app.location }}"
+    
+    - name: Check list of running Node.js apps.
+      command: /usr/local/lib/npm/bin/pm2 list
+      become_user: "{{ ansible_ssh_user }}"
+      register: pm2_list
+      changed_when: false
+    
+    - name: Start GRTgaz-demo App.
+      command: "/usr/local/lib/npm/bin/pm2 start {{ gtrgaz_demo_app.location }}/server.js --name {{ gtrgaz_demo_app.name }}"
+      become_user: "{{ ansible_ssh_user }}"
+      when: pm2_list.stdout.find(gtrgaz_demo_app.name) == -1

@@ -1,0 +1,5 @@
+[development]
+api-demo.suricats-consulting.com
+
+[development:vars]
+ansible_python_interpreter=/usr/bin/python3

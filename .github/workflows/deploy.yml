@@ -1,0 +1,23 @@
+name: Deploy
+
+on:
+    push:
+      branches: [ master ]
+
+jobs:
+
+  deploy-app:
+    name: Run a playbook
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: saubermacherag/ansible-playbook-docker-action@v1.3
+      env:
+        ANSIBLE_HOST_KEY_CHECKING: false
+        ANSIBLE_FORCE_COLOR: true
+      with:
+        playbookName: '.ansible/playbook/deploy.yml'
+        inventoryFile: '.ansible/inventory/inventory'
+        keyFile: ".ansible/ssh-key"
+        keyFileVaultPass: ${{ secrets.KEYFILE_VAULT_PASS }}
+        extraVars: "-e ansible_ssh_user=${{ secrets.ANSIBLE_USER }}"

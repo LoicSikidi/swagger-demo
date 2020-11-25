@@ -18,7 +18,9 @@ app.use("/default", swaggerUI.serve, (...args) => swaggerUI.setup(yamljs.load(ge
 app.use("/solution-exo-1", swaggerUI.serve, (...args) => swaggerUI.setup(yamljs.load(getDocumentationPath("soluce_exo1")))(...args))
 app.use("/solution-exo-2", swaggerUI.serve, (...args) => swaggerUI.setup(yamljs.load(getDocumentationPath("soluce_exo2")))(...args))
 
-
+/**
+ * Validation du contrat côté serveur
+ */
 // const OpenApiValidator = require('express-openapi-validator')
 // app.use(
 //     OpenApiValidator.middleware({

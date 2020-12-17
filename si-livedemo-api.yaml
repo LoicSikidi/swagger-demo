@@ -1,0 +1,117 @@
+openapi: 3.0.0
+info:
+  description: API permettant d'obtenir les informations concernant le tour de France
+  version: 1.0.0
+  title: si-livedemo-api
+  
+tags:
+- name: tour de france
+  description: Gestion des informations autour d'une édition
+servers:
+  - url: http://localhost:3005/api/v1
+    description: Api locale
+  - url: https://gtw-dev.api.grtgaz.com/si/live-demo/v1
+    description : API de developpement 
+
+paths:
+  /equipes:
+    get:
+      tags:
+      - tour de france
+      summary: Affiche les équipes ayant participé au tour de France
+      operationId: getEquipes
+      parameters:
+        - $ref: '#/components/parameters/pays'
+      responses:
+        '200':
+          description: Réponse en succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEquipeResponse'
+        '401':
+          description: Votre jeton d'accès est invalide ou périmé ce faisant l'accès à la ressource vous est refusé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        '500':
+          description: Erreur interne 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+
+components:
+  schemas:
+    Equipe:
+      required:
+        - id
+        - nom
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        nom:
+          type: string
+          example: AG3R
+          description: Nom de l'equipe
+        sponsor:
+          type: string
+          example: GRTgaz
+        pays:
+          type: string
+          description: Code ISO-3166-1
+          example: FR
+              
+    GetEquipeResponse:
+      required: 
+      - equipes
+      properties:
+        equipes:
+         type: array
+         items:
+           $ref: '#/components/schemas/Equipe'
+
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+
+    Unauthorized:
+      description: Votre jeton d'accéss est invalide ou périmé ce faisant l'accès à la ressource vous est refusé
+      allOf:
+        - $ref: '#/components/schemas/Error'
+      properties:
+        code:
+          type: string
+          enum:
+            - unauthorized
+        message:
+          example: Your request is unauthorized to call this resource
+ 
+    InternalError:
+      description: Erreur interne
+      allOf:
+        - $ref: '#/components/schemas/Error'
+      properties:
+        code:
+          type: string
+          enum:
+            - internal_error
+        message:
+          example: Please contact the administrator...
+  parameters:
+    pays:
+      name: pays
+      in: query
+      description: Filtre par pays
+      required: false
+      schema:
+        type: string

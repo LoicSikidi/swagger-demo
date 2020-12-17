@@ -21,13 +21,13 @@ app.use("/solution-exo-2", swaggerUI.serve, (...args) => swaggerUI.setup(yamljs.
 /**
  * Validation du contrat côté serveur
  */
-// const OpenApiValidator = require('express-openapi-validator')
-// app.use(
-//     OpenApiValidator.middleware({
-//       apiSpec: './si-livedemo-api.yaml',
-//       validateResponses: true,
-//     }),
-// )
+const OpenApiValidator = require('express-openapi-validator')
+app.use(
+    OpenApiValidator.middleware({
+      apiSpec: path.join(__dirname, 'si-livedemo-api.yaml'),
+      validateResponses: true,
+    }),
+)
 
 app.use('/api/v1/equipes', equipes)
 
